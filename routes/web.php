@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\GithubController;
+use App\Http\Middleware\CheckAge;
+use App\Http\Middleware\ShowAge;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -26,4 +28,9 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::controller(GithubController::class)->group(function(){
     Route::get('auth/github', 'redirectToGithub')->name('auth.github');
     Route::get('auth/github/callback', 'handleGithubCallback');
+});
+
+Route::middleware([CheckAge::class])->group(function(){
+    Route::get('/age/{age}', [App\Http\Controllers\ShowAge::class, 'index']);
+
 });
